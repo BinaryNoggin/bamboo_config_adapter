@@ -7,6 +7,7 @@ defmodule Bamboo.ConfigAdapter do
   ## Config
 
       config :my_app, MyApp.Mailer,
+        adapter: Bamboo.ConfigAdapter,
         chained_adapter: Bamboo.SMTPAdapter,
         server: "smtp.domain",
         hostname: "www.mydomain.com",
