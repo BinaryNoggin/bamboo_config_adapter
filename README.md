@@ -8,7 +8,7 @@ happens and Bamboo.ConfigAdapter is here to help.
 
 ## Installation
 
-[bamboo_config_adapter](https://hex.pm/packages/bamboo_config_adapter), the package can be installed
+[bamboo_config_adapter](https://hex.pm/packages/bamboo_config_adapter) can be installed
 by adding `bamboo_config_adapter` to your list of dependencies in `mix.exs`:
 
 ```elixir
