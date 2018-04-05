@@ -1,6 +1,7 @@
 defmodule Bamboo.ConfigAdapter.Test do
   use ExUnit.Case, async: true
   alias Bamboo.ConfigAdapter, as: Subject
+  alias Bamboo.Email
 
   defmodule ChainedAdapter do
     @behaviour Bamboo.Adapter
@@ -28,12 +29,21 @@ defmodule Bamboo.ConfigAdapter.Test do
   end
 
   test "deliver/2 merges configuration and delegates to the chained adapter" do
-    email = %{private:  %{changed: true, added: true}}
+    email = Subject.Email.put_config(%Email{}, %{changed: true, added: true})
     config = %{chained_adapter: __MODULE__.ChainedAdapter, changed: false}
 
     Subject.deliver(email, config)
     assert_receive {:deliver, ^email, final_config}
     assert final_config.changed
     assert final_config.added
+  end
+
+  test "deliver/2 passes configuration to the chained adapter when no custom config is found" do
+    email = %Email{}
+    config = %{chained_adapter: __MODULE__.ChainedAdapter, changed: false}
+
+    Subject.deliver(email, config)
+    assert_receive {:deliver, ^email, final_config}
+    refute final_config.changed
   end
 end

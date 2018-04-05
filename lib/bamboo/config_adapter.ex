@@ -18,14 +18,16 @@ defmodule Bamboo.ConfigAdapter do
 
       def welcome do
         email
-        |> Bamboo.Email.put_private(%{server: "smtp.other_domain)})
+        |> Bamboo.ConfigAdapter.put_config(%{server: "smtp.other_domain)})
         |> Mailer.deliver_now()
       end
   """
 
+  alias Bamboo.ConfigAdapter.Email
+
   def deliver(email, %{chained_adapter: chained_adapter} = config) do
     custom_config = email
-    |> Map.get(:private, %{})
+    |> Email.get_config()
 
     email
     |> chained_adapter.deliver(Map.merge(config, custom_config))
