@@ -1,6 +1,10 @@
-# BambooConfigAdapter
+# Bamboo.ConfigAdapter
 
-**TODO: Add description**
+In some cooporate environments sending emails isn't simply picking a
+server and sending it to that server. Sometimes different emails require
+different types of configurations that are only known at runtime. Does
+this sound like your problem? This may seem convoluted, but this
+happens and Bamboo.ConfigAdapter is here to help.
 
 ## Installation
 
