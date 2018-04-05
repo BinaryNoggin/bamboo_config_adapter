@@ -39,7 +39,7 @@ defmodule BambooConfigAdapter.MixProject do
 
   defp package do
     [
-      maintainers: ["Amos King"],
+      maintainers: ["Amos King @adkron <amos@binarynoggin.com>"],
       licenses: ["MIT"],
       links: %{"GitHub" => @project_url}
     ]

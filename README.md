@@ -1,6 +1,6 @@
 # Bamboo.ConfigAdapter
 
-In some cooporate environments sending emails isn't simply picking a
+In some cooperate environments sending emails isn't simply picking a
 server and sending it to that server. Sometimes different emails require
 different types of configurations that are only known at runtime. Does
 this sound like your problem? This may seem convoluted, but this
@@ -8,7 +8,7 @@ happens and Bamboo.ConfigAdapter is here to help.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+[bamboo_config_adapter](https://hex.pm/packages/bamboo_config_adapter), the package can be installed
 by adding `bamboo_config_adapter` to your list of dependencies in `mix.exs`:
 
 ```elixir
