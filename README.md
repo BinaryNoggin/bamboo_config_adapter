@@ -14,7 +14,7 @@ by adding `bamboo_config_adapter` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:bamboo_config_adapter, "~> 0.1.0"}
+    {:bamboo_config_adapter, "~> 0.2.0"}
   ]
 end
 ```
