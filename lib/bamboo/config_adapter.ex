@@ -14,6 +14,12 @@ defmodule Bamboo.ConfigAdapter do
         username: "your.name@your.domain", # or {:system, "SMTP_USERNAME"}
         password: "pa55word", # or {:system, "SMTP_PASSWORD"}
 
+  ### Or if chained adapter is configured completely at runtime
+
+      config :my_app, MyApp.Mailer,
+        adapter: Bamboo.ConfigAdapter,
+        chained_adapter: Bamboo.SMTPAdapter
+
   ## Delivering mail
 
       def welcome do
@@ -29,12 +35,17 @@ defmodule Bamboo.ConfigAdapter do
     custom_config = email
     |> Email.get_config()
 
+    final_config =
+      config
+      |> Map.merge(custom_config)
+      |> chained_adapter.handle_config()
+
     email
-    |> chained_adapter.deliver(Map.merge(config, custom_config))
+    |> chained_adapter.deliver(final_config)
   end
 
-  def handle_config(%{chained_adapter: chained_adapter} = config) do
-    chained_adapter.handle_config(config)
+  def handle_config(%{chained_adapter: _} = config) do
+    config
   end
 
   def handle_config(config) do
