@@ -32,7 +32,7 @@ defmodule BambooConfigAdapter.MixProject do
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
       {:credo, "~> 0.8.10", only: [:dev, :test]},
       {:earmark, ">= 1.0.3", only: :dev},
-      {:ex_doc, "~> 0.16.2", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.7.1", only: :test}
     ]
   end
