@@ -15,7 +15,7 @@ defmodule Bamboo.ConfigAdapter.Email do
 
   alias Bamboo.Email
 
-  @spec get_config(Email.t) :: map
+  @spec get_config(Email.t()) :: map
   def get_config(%Email{private: private}) do
     Map.get(private, @config_key, %{})
   end
@@ -34,7 +34,7 @@ defmodule Bamboo.ConfigAdapter.Email do
     iex> Bamboo.ConfigAdapter.Email.put_config(%Bamboo.Email{private: %{config_adapter: :bar}}, %{foo: :baz})
     %Bamboo.Email{private: %{config_adapter: %{foo: :baz}}}
   """
-  @spec put_config(Email.t, map) :: Email.t
+  @spec put_config(Email.t(), map) :: Email.t()
   def put_config(%Email{} = email, config) do
     Map.update(email, :private, %{@config_key => config}, fn
       current_private -> Map.put(current_private, @config_key, config)

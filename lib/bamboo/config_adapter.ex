@@ -32,8 +32,9 @@ defmodule Bamboo.ConfigAdapter do
   alias Bamboo.ConfigAdapter.Email
 
   def deliver(email, %{chained_adapter: chained_adapter} = config) do
-    custom_config = email
-    |> Email.get_config()
+    custom_config =
+      email
+      |> Email.get_config()
 
     final_config =
       config
@@ -49,6 +50,7 @@ defmodule Bamboo.ConfigAdapter do
   end
 
   def handle_config(config) do
-    raise ArgumentError, "#{__MODULE__} requires chained_adapter to be configured, got #{inspect config}"
+    raise ArgumentError,
+          "#{__MODULE__} requires chained_adapter to be configured, got #{inspect(config)}"
   end
 end

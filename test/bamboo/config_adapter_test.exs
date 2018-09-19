@@ -7,16 +7,17 @@ defmodule Bamboo.ConfigAdapter.Test do
     @behaviour Bamboo.Adapter
 
     def deliver(email, config) do
-      send self(), {:deliver, email, config}
+      send(self(), {:deliver, email, config})
     end
 
     def handle_config(%{required_config: _} = config) do
-      send self(), {:handle_config, config}
+      send(self(), {:handle_config, config})
       config
     end
 
     def handle_config(config) do
-      raise ArgumentError, "#{__MODULE__} requires required_config to be configured, got #{inspect config}"
+      raise ArgumentError,
+            "#{__MODULE__} requires required_config to be configured, got #{inspect(config)}"
     end
   end
 
@@ -41,7 +42,9 @@ defmodule Bamboo.ConfigAdapter.Test do
   end
 
   test "deliver/2 merges configuration and delegates to the chained adapter" do
-    email = Subject.Email.put_config(%Email{}, %{changed: true, added: true, required_config: true})
+    email =
+      Subject.Email.put_config(%Email{}, %{changed: true, added: true, required_config: true})
+
     config = %{chained_adapter: __MODULE__.ChainedAdapter, changed: false}
 
     Subject.deliver(email, config)
