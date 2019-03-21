@@ -4,10 +4,11 @@ defmodule Bamboo.ConfigAdapter.Email do
 
 
   # Example Usage
-
+      import Bamboo.Email
+      
       def welcome do
-        email
-        |> Bamboo.ConfigAdapter.put_config(%{server: "smtp.other_domain)})
+        new_email()
+        |> Bamboo.ConfigAdapter.Email.put_config(%{server: "smtp.other_domain)})
         |> Mailer.deliver_now()
       end
   """
