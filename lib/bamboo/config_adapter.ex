@@ -24,20 +24,34 @@ defmodule Bamboo.ConfigAdapter do
 
       def welcome do
         email
-        |> Bamboo.ConfigAdapter.put_config(%{server: "smtp.other_domain)})
+        |> Bamboo.ConfigAdapter.put_config(%{server: "smtp.other_domain")})
         |> Mailer.deliver_now()
       end
+
+     def welcome_runtime_adapter do
+       email
+       |> Bamboo.ConfigAdapter.put_config(%{
+          server: "smtp.other_domain",
+          chained_adapter: Bamboo.SMTPAdapter)})
+       |> Mailer.deliver_now()
+     end
   """
 
   alias Bamboo.ConfigAdapter.Email
 
-  def deliver(email, %{chained_adapter: chained_adapter} = config) do
+  def deliver(email, config) do
     custom_config =
       email
       |> Email.get_config()
 
-    final_config =
+    merged_config =
       config
+      |> Map.merge(custom_config)
+
+    chained_adapter = Map.get(merged_config, :chained_adapter)
+
+    final_config =
+      merged_config
       |> Map.merge(custom_config)
       |> chained_adapter.handle_config()
 

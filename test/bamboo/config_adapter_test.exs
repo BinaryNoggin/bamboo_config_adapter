@@ -61,4 +61,40 @@ defmodule Bamboo.ConfigAdapter.Test do
     assert_receive {:deliver, ^email, final_config}
     refute final_config.changed
   end
+
+  describe "configuring the chained adapter on the fly" do
+    test "deliver/2 merges configuration and delegates to the chained adapter" do
+      email =
+        Subject.Email.put_config(%Email{}, %{
+          chained_adapter: __MODULE__.ChainedAdapter,
+          changed: true,
+          added: true,
+          required_config: true
+        })
+
+      config = %{changed: false}
+
+      Subject.deliver(email, config)
+      assert_receive {:deliver, ^email, final_config}
+      assert final_config.changed
+      assert final_config.added
+    end
+
+    test "deliver/2 uses the chained adapter of the email" do
+      email =
+        Subject.Email.put_config(%Email{}, %{
+              chained_adapter: __MODULE__.ChainedAdapter,
+              changed: true,
+              added: true,
+              required_config: true
+                                 })
+
+      config = %{chained_adapter: :bad_adapter, changed: false}
+
+      Subject.deliver(email, config)
+      assert_receive {:deliver, ^email, final_config}
+      assert final_config.changed
+      assert final_config.added
+    end
+  end
 end

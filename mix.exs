@@ -6,8 +6,8 @@ defmodule BambooConfigAdapter.MixProject do
   def project do
     [
       app: :bamboo_config_adapter,
-      version: "0.2.1",
-      elixir: "~> 1.6",
+      version: "1.0.0",
+      elixir: "~> 1.8",
       source_url: @project_url,
       homepage_url: @project_url,
       name: "Bamboo Config Adapter",
@@ -30,9 +30,8 @@ defmodule BambooConfigAdapter.MixProject do
     [
       {:bamboo, ">= 0.8.0 and < 2.0.0"},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
-      {:credo, "~> 0.8.10", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.7.1", only: :test}
+      {:excoveralls, "~> 0.10.6", only: :test}
     ]
   end
 
