@@ -67,4 +67,6 @@ defmodule Bamboo.ConfigAdapter do
     raise ArgumentError,
           "#{__MODULE__} requires chained_adapter to be configured, got #{inspect(config)}"
   end
+
+  def supports_attachments?, do: true
 end

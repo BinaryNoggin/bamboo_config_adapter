@@ -8,6 +8,7 @@ defmodule Bamboo.ConfigAdapter.Test do
 
     def deliver(email, config) do
       send(self(), {:deliver, email, config})
+      {:ok, email}
     end
 
     def handle_config(%{required_config: _} = config) do
@@ -19,6 +20,8 @@ defmodule Bamboo.ConfigAdapter.Test do
       raise ArgumentError,
             "#{__MODULE__} requires required_config to be configured, got #{inspect(config)}"
     end
+
+    def supports_attachments?, do: true
   end
 
   test "configuration requires `:chained_adpater`" do
@@ -47,7 +50,7 @@ defmodule Bamboo.ConfigAdapter.Test do
 
     config = %{chained_adapter: __MODULE__.ChainedAdapter, changed: false}
 
-    Subject.deliver(email, config)
+    assert {:ok, _} = Subject.deliver(email, config)
     assert_receive {:deliver, ^email, final_config}
     assert final_config.changed
     assert final_config.added
@@ -57,7 +60,7 @@ defmodule Bamboo.ConfigAdapter.Test do
     email = %Email{}
     config = %{chained_adapter: __MODULE__.ChainedAdapter, changed: false, required_config: true}
 
-    Subject.deliver(email, config)
+    assert {:ok, _} = Subject.deliver(email, config)
     assert_receive {:deliver, ^email, final_config}
     refute final_config.changed
   end
@@ -74,7 +77,7 @@ defmodule Bamboo.ConfigAdapter.Test do
 
       config = %{changed: false}
 
-      Subject.deliver(email, config)
+      assert {:ok, _} = Subject.deliver(email, config)
       assert_receive {:deliver, ^email, final_config}
       assert final_config.changed
       assert final_config.added
@@ -83,15 +86,15 @@ defmodule Bamboo.ConfigAdapter.Test do
     test "deliver/2 uses the chained adapter of the email" do
       email =
         Subject.Email.put_config(%Email{}, %{
-              chained_adapter: __MODULE__.ChainedAdapter,
-              changed: true,
-              added: true,
-              required_config: true
-                                 })
+          chained_adapter: __MODULE__.ChainedAdapter,
+          changed: true,
+          added: true,
+          required_config: true
+        })
 
       config = %{chained_adapter: :bad_adapter, changed: false}
 
-      Subject.deliver(email, config)
+      assert {:ok, _} = Subject.deliver(email, config)
       assert_receive {:deliver, ^email, final_config}
       assert final_config.changed
       assert final_config.added

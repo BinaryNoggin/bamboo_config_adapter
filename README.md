@@ -19,6 +19,13 @@ def deps do
 end
 ```
 
+## Gotchas
+
+Bamboo Adapters must implement a `supports_attachments?/0`. Since the function takes no
+arguments there is no way for `Bamboo.ConfigAdapter` to know if the chained adapter
+supports attachements. Instead we have opted to always return `true`, but it is up to
+you to ensure that attachments will work with the chained adapter.
+
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/bamboo_config_adapter](https://hexdocs.pm/bamboo_config_adapter).
