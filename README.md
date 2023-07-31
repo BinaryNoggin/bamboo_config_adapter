@@ -19,6 +19,47 @@ def deps do
 end
 ```
 
+## Example using SMTPAdapter
+
+### Config
+
+      config :my_app, MyApp.Mailer,
+        adapter: Bamboo.ConfigAdapter,
+        chained_adapter: Bamboo.SMTPAdapter,
+        server: "smtp.domain",
+        hostname: "www.mydomain.com",
+        username: "your.name@your.domain", # or {:system, "SMTP_USERNAME"}
+        password: "pa55word", # or {:system, "SMTP_PASSWORD"}
+
+#### Or if chained adapter is configured completely at runtime
+
+      config :my_app, MyApp.Mailer,
+        adapter: Bamboo.ConfigAdapter
+
+### Delivering mail
+
+      def welcome do
+        email
+        |> Bamboo.ConfigAdapter.Email.put_config(%{server: "smtp.other_domain"})
+        |> Mailer.deliver_now()
+      end
+
+     def welcome_runtime_adapter do
+       email
+       |> Bamboo.ConfigAdapter.Email.put_config(%{
+          server: "smtp.other_domain",
+          chained_adapter: Bamboo.SMTPAdapter})
+       |> Mailer.deliver_now()
+     end
+"""
+
+## Testing
+
+If the config option `:test_mode` is set to true then the email will be sent to Bamboo.TestAdapter instead of the chained_adapter in the config. All config, merged from the config file and any runtime config will available under the element test_merged_config on the returned email.
+
+For example:
+
+
 ## Gotchas
 
 Bamboo Adapters must implement a `supports_attachments?/0`. Since the function takes no
