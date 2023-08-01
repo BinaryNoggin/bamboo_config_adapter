@@ -60,6 +60,7 @@ defmodule Bamboo.ConfigAdapter do
       |> chained_adapter.handle_config()
 
     email
+    |> Email.put_config(%{}) # clear private config before we go to the chained adapter
     |> chained_adapter.deliver(final_config)
   end
 

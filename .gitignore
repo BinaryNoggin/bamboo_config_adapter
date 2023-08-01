@@ -22,3 +22,7 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 bamboo_config_adapter-*.tar
 
+# Ignore intellij files
+.idea/
+*.iml
+
