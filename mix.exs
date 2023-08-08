@@ -6,7 +6,7 @@ defmodule BambooConfigAdapter.MixProject do
   def project do
     [
       app: :bamboo_config_adapter,
-      version: "1.0.0",
+      version: "1.1.0",
       elixir: "~> 1.8",
       source_url: @project_url,
       homepage_url: @project_url,
