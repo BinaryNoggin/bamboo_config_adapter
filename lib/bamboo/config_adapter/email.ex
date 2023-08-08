@@ -5,7 +5,7 @@ defmodule Bamboo.ConfigAdapter.Email do
 
   # Example Usage
       import Bamboo.Email
-      
+
       def welcome do
         new_email()
         |> Bamboo.ConfigAdapter.Email.put_config(%{server: "smtp.other_domain)})

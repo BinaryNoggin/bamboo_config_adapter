@@ -28,7 +28,7 @@ defmodule BambooConfigAdapter.MixProject do
 
   defp deps do
     [
-      {:bamboo, ">= 0.8.0 and < 2.0.0"},
+      {:bamboo, ">= 0.8.0 and <= 2.4.0"},
       {:mix_test_watch, "~> 0.5", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.10.6", only: :test}

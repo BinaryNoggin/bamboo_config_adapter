@@ -17,22 +17,21 @@ defmodule Bamboo.ConfigAdapter do
   ### Or if chained adapter is configured completely at runtime
 
       config :my_app, MyApp.Mailer,
-        adapter: Bamboo.ConfigAdapter,
-        chained_adapter: Bamboo.SMTPAdapter
+        adapter: Bamboo.ConfigAdapter
 
   ## Delivering mail
 
       def welcome do
         email
-        |> Bamboo.ConfigAdapter.put_config(%{server: "smtp.other_domain")})
+        |> Bamboo.ConfigAdapter.Email.put_config(%{server: "smtp.other_domain"})
         |> Mailer.deliver_now()
       end
 
      def welcome_runtime_adapter do
        email
-       |> Bamboo.ConfigAdapter.put_config(%{
+       |> Bamboo.ConfigAdapter.Email.put_config(%{
           server: "smtp.other_domain",
-          chained_adapter: Bamboo.SMTPAdapter)})
+          chained_adapter: Bamboo.SMTPAdapter})
        |> Mailer.deliver_now()
      end
   """
@@ -48,23 +47,26 @@ defmodule Bamboo.ConfigAdapter do
       config
       |> Map.merge(custom_config)
 
-    chained_adapter = Map.get(merged_config, :chained_adapter)
+    test_mode = Map.get(merged_config, :test_mode, false)
+
+    {chained_adapter, email} = if test_mode do
+      {Bamboo.TestAdapter, Map.put(email, :test_merged_config, merged_config)}
+    else
+      {Map.get(merged_config, :chained_adapter), email}
+    end
 
     final_config =
       merged_config
-      |> Map.merge(custom_config)
       |> chained_adapter.handle_config()
 
     email
+    |> Email.put_config(%{}) # clear private config before we go to the chained adapter
     |> chained_adapter.deliver(final_config)
   end
 
-  def handle_config(%{chained_adapter: _} = config) do
+  def handle_config(config) do
     config
   end
 
-  def handle_config(config) do
-    raise ArgumentError,
-          "#{__MODULE__} requires chained_adapter to be configured, got #{inspect(config)}"
-  end
+  def supports_attachments?, do: true
 end
